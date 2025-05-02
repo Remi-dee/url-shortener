@@ -1,4 +1,5 @@
 import { UrlForm } from "./components/url-form";
+import { UrlList } from "./components/url-list";
 
 export default function Home() {
   return (
@@ -15,6 +16,11 @@ export default function Home() {
 
         <div className="mt-10">
           <UrlForm />
+        </div>
+
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Your URLs</h2>
+          <UrlList />
         </div>
       </div>
     </main>
