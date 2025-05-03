@@ -1,53 +1,48 @@
 # URL Shortener
 
-A modern URL shortening service built with Next.js and NestJS.
+A modern URL shortening service built with NestJS and Next.js, featuring a clean UI and comprehensive API.
 
 ## Features
 
-- Shorten long URLs to compact, shareable links
-- View list of all shortened URLs with statistics
-- Search functionality for finding previously shortened URLs
-- RESTful API for programmatic integration
-- Real-time statistics tracking
+- Create short URLs from long URLs
+- View all shortened URLs with statistics
+- Search through URLs
+- Copy shortened URLs to clipboard
+- Delete URLs
+- View detailed statistics for each URL
+- Responsive design
+- API endpoints for programmatic access
 
 ## Tech Stack
 
-### Frontend
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
+- **Backend**: NestJS, TypeScript
+- **Testing**: Jest, React Testing Library
 
-- Next.js 14 (App Router)
-- TypeScript
-- Tailwind CSS
-- Shadcn UI
-- React Query
-- Zod for validation
+## Prerequisites
 
-### Backend
-
-- NestJS
-- TypeScript
-- Jest for testing
-- MongoDB for persistence
+- Node.js (v18 or higher)
+- pnpm (v8 or higher)
 
 ## Project Structure
 
-```bash
+```
 url-shortener/
 ├── apps/
-│   ├── web/           # Next.js frontend
-│   └── api/           # NestJS backend
-├── packages/
-│   └── shared/        # Shared types and utilities
+│   ├── api/                 # NestJS backend
+│   │   ├── src/
+│   │   │   ├── url/        # URL module
+│   │   │   └── main.ts     # Application entry point
+│   │   └── test/           # Backend tests
+│   └── web/                # Next.js frontend
+│       ├── src/
+│       │   ├── app/        # Next.js app directory
+│       │   └── components/ # React components
+│       └── test/           # Frontend tests
+└── package.json
 ```
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18 or higher
-- pnpm package manager
-- MongoDB (local or Atlas)
-
-### Installation
+## Setup Instructions
 
 1. Clone the repository:
 
@@ -62,73 +57,111 @@ url-shortener/
    pnpm install
    ```
 
-3. Set up environment variables:
-
-   ```bash
-   cp apps/web/.env.example apps/web/.env.local
-   cp apps/api/.env.example apps/api/.env
-   ```
-
-4. Start the development servers:
+3. Start the development servers:
 
    ```bash
    # Start both frontend and backend
    pnpm dev
 
    # Or start them separately
-   pnpm web:dev
-   pnpm api:dev
+   pnpm dev:web    # Frontend only
+   pnpm dev:api    # Backend only
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) to view the application
+4. Access the application:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:3001
 
-## API Documentation
-
-### Endpoints
-
-1. `POST /api/encode`
-
-   - Encodes a long URL to a shortened URL
-   - Request body: `{ "url": "https://example.com" }`
-   - Response: `{ "shortUrl": "http://short.est/abc123" }`
-
-2. `GET /api/decode/:code`
-
-   - Decodes a shortened URL to its original URL
-   - Response: `{ "originalUrl": "https://example.com" }`
-
-3. `GET /api/statistic/:code`
-
-   - Returns statistics for a shortened URL
-   - Response: `{ "visits": 42, "lastVisited": "2024-03-15T..." }`
-
-4. `GET /api/list`
-
-   - Lists all shortened URLs
-   - Response: `{ "urls": [...] }`
-
-5. `GET /:code`
-   - Redirects to the original URL
-
-## Testing
+## Running Tests
 
 ```bash
 # Run all tests
 pnpm test
 
-# Run frontend tests
-pnpm web:test
+# Run frontend tests only
+pnpm test:web
 
-# Run backend tests
-pnpm api:test
+# Run backend tests only
+pnpm test:api
 ```
+
+## API Documentation
+
+### Endpoints
+
+#### Create Short URL
+
+- **POST** `/api/encode`
+- **Body**: `{ "url": "https://example.com" }`
+- **Response**: `{ "shortUrl": "http://localhost:3000/abc123" }`
+
+#### Get Original URL
+
+- **GET** `/api/decode/:code`
+- **Response**: `{ "originalUrl": "https://example.com" }`
+
+#### Get URL Statistics
+
+- **GET** `/api/statistic/:code`
+- **Response**:
+  ```json
+  {
+    "visits": 10,
+    "createdAt": "2024-03-01T00:00:00.000Z",
+    "lastVisited": "2024-03-03T00:00:00.000Z",
+    "visitsByDay": [...],
+    "visitsByCountry": [...],
+    "visitsByDevice": [...]
+  }
+  ```
+
+#### List All URLs
+
+- **GET** `/api/list`
+- **Response**: Array of URL objects
+
+#### Search URLs
+
+- **GET** `/api/search?q=example`
+- **Response**: Array of matching URL objects
+
+#### Redirect to Original URL
+
+- **GET** `/:code`
+- **Response**: Redirects to original URL
+
+#### Delete URL
+
+- **DELETE** `/:code`
+- **Response**: Boolean indicating success
+
+## Development
+
+### Code Style
+
+- TypeScript strict mode enabled
+- ESLint and Prettier for code formatting
+- Follows NestJS and Next.js best practices
+
+### Testing
+
+- Unit tests for both frontend and backend
+- Integration tests for API endpoints
+- Component tests for React components
+
+### Error Handling
+
+- Comprehensive error handling on both frontend and backend
+- User-friendly error messages
+- Proper HTTP status codes
 
 ## Contributing
 
-1. Create a new branch for your feature
-2. Make your changes
-3. Write or update tests
-4. Submit a pull request
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 

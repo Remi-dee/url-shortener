@@ -78,4 +78,35 @@ export class UrlService {
       url.originalUrl.toLowerCase().includes(query.toLowerCase()),
     );
   }
+
+  getStatistics(shortCode: string) {
+    const url = this.urls.get(shortCode);
+    if (!url) {
+      return null;
+    }
+
+    // Mock data for demonstration
+    return {
+      ...url,
+      visitsByDay: [
+        { date: '2024-03-01', count: 5 },
+        { date: '2024-03-02', count: 8 },
+        { date: '2024-03-03', count: 12 },
+      ],
+      visitsByCountry: [
+        { country: 'United States', count: 15 },
+        { country: 'United Kingdom', count: 6 },
+        { country: 'Germany', count: 4 },
+      ],
+      visitsByDevice: [
+        { device: 'Desktop', count: 12 },
+        { device: 'Mobile', count: 8 },
+        { device: 'Tablet', count: 3 },
+      ],
+    };
+  }
+
+  remove(shortCode: string): boolean {
+    return this.urls.delete(shortCode);
+  }
 }

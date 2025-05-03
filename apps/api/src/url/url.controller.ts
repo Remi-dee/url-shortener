@@ -8,6 +8,7 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { UrlService } from './url.service';
 import { CreateUrlDto } from './dto/create-url.dto';
@@ -40,10 +41,27 @@ export class UrlController {
     if (!url) {
       throw new HttpException('URL not found', HttpStatus.NOT_FOUND);
     }
+
+    // Mock data for demonstration
     return {
       visits: url.visits,
-      lastVisited: url.lastVisited,
       createdAt: url.createdAt,
+      lastVisited: url.lastVisited,
+      visitsByDay: [
+        { date: '2024-03-01', count: 5 },
+        { date: '2024-03-02', count: 8 },
+        { date: '2024-03-03', count: 12 },
+      ],
+      visitsByCountry: [
+        { country: 'United States', count: 15 },
+        { country: 'United Kingdom', count: 6 },
+        { country: 'Germany', count: 4 },
+      ],
+      visitsByDevice: [
+        { device: 'Desktop', count: 12 },
+        { device: 'Mobile', count: 8 },
+        { device: 'Tablet', count: 3 },
+      ],
     };
   }
 
@@ -66,5 +84,10 @@ export class UrlController {
     }
     this.urlService.incrementVisits(code);
     return { url: url.originalUrl };
+  }
+
+  @Delete(':code')
+  remove(@Param('code') code: string) {
+    return this.urlService.remove(code);
   }
 }

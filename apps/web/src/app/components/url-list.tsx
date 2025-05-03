@@ -23,6 +23,9 @@ export function UrlList() {
   const [error, setError] = useState<string | null>(null);
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
   const [showStats, setShowStats] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     fetchUrls();
@@ -66,10 +69,11 @@ export function UrlList() {
     }
   };
 
-  const handleCopy = async (shortUrl: string) => {
+  const handleCopy = async (shortCode: string) => {
+    const shortUrl = `http://localhost:3000/${shortCode}`;
     try {
       await navigator.clipboard.writeText(shortUrl);
-      setCopiedUrl(shortUrl);
+      setCopiedUrl(shortCode);
       setTimeout(() => setCopiedUrl(null), 2000);
     } catch (err) {
       setError("Failed to copy URL");
@@ -77,18 +81,18 @@ export function UrlList() {
   };
 
   const handleDelete = async (shortCode: string) => {
-    if (!confirm("Are you sure you want to delete this URL?")) return;
+    setShowDeleteConfirm(shortCode);
+  };
 
+  const confirmDelete = async (shortCode: string) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/url/${shortCode}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`http://localhost:3000/${shortCode}`, {
+        method: "DELETE",
+      });
       if (!response.ok) {
         throw new Error("Failed to delete URL");
       }
+      setShowDeleteConfirm(null);
       fetchUrls();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to delete URL");
@@ -204,11 +208,11 @@ export function UrlList() {
                           {shortUrl}
                         </a>
                         <button
-                          onClick={() => handleCopy(shortUrl)}
+                          onClick={() => handleCopy(url.shortCode)}
                           className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                           title="Copy URL to clipboard"
                         >
-                          {copiedUrl === shortUrl ? (
+                          {copiedUrl === url.shortCode ? (
                             <span className="text-green-500">✓</span>
                           ) : (
                             <ClipboardDocumentIcon className="h-5 w-5" />
@@ -226,7 +230,7 @@ export function UrlList() {
                       {formatDate(url.createdAt)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {url.lastVisited ? formatDate(url.lastVisited) : "Never"}
+                      {url.lastVisited ? formatDate(url.lastVisited) : "-"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <div className="flex items-center space-x-2">
@@ -240,7 +244,7 @@ export function UrlList() {
                         <button
                           onClick={() => handleDelete(url.shortCode)}
                           className="p-1 text-gray-400 hover:text-red-600 transition-colors duration-200"
-                          title="Delete this URL"
+                          title="Delete URL"
                         >
                           <TrashIcon className="h-5 w-5" />
                         </button>
@@ -259,6 +263,32 @@ export function UrlList() {
           shortCode={showStats}
           onClose={() => setShowStats(null)}
         />
+      )}
+
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-xl">
+            <h3 className="text-lg font-medium mb-4">Confirm Deletion</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this URL? This action cannot be
+              undone.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowDeleteConfirm(null)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => confirmDelete(showDeleteConfirm)}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors duration-200"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
