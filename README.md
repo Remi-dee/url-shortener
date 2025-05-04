@@ -166,3 +166,24 @@ pnpm test:api
 ## License
 
 MIT
+
+## Video Demos
+
+### Core Features
+
+- [URL Shortening](https://example.com/demos/url-shortening.mp4) - Watch how to create and manage shortened URLs
+- [URL Search](https://example.com/demos/url-search.mp4) - See how the real-time search functionality works
+- [URL Statistics](https://example.com/demos/url-stats.mp4) - Explore the detailed statistics and analytics features
+
+### User Interface
+
+- [Responsive Design](https://example.com/demos/responsive-design.mp4) - See how the application adapts to different screen sizes
+- [Copy to Clipboard](https://example.com/demos/copy-feature.mp4) - Watch the one-click copy functionality in action
+- [Delete Confirmation](https://example.com/demos/delete-confirmation.mp4) - See the safe deletion process with confirmation
+
+### API Usage
+
+- [API Integration](https://example.com/demos/api-integration.mp4) - Learn how to integrate with the URL shortener API
+- [Bulk Operations](https://example.com/demos/bulk-operations.mp4) - See how to perform bulk URL operations
+
+> Note: Replace the example.com URLs with actual video demo links when available.
