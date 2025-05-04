@@ -28,11 +28,21 @@ export function UrlList() {
   );
 
   useEffect(() => {
+    // Initial fetch
     fetchUrls();
-    // Set up polling for real-time updates
-    const interval = setInterval(fetchUrls, 5000); // Update every 5 seconds
-    return () => clearInterval(interval);
-  }, []);
+
+    // Only set up polling if there's no active search
+    let interval: NodeJS.Timeout;
+    if (searchQuery.length < 3) {
+      interval = setInterval(fetchUrls, 5000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [searchQuery]); // Add searchQuery as dependency to control polling
 
   const fetchUrls = async () => {
     try {
@@ -41,7 +51,12 @@ export function UrlList() {
         throw new Error("Failed to fetch URLs");
       }
       const data = await response.json();
-      setUrls(data);
+      // Sort URLs by creation date in descending order (newest first)
+      const sortedData = data.sort(
+        (a: UrlEntry, b: UrlEntry) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setUrls(sortedData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -50,22 +65,37 @@ export function UrlList() {
   };
 
   const handleSearch = async (query: string) => {
-    if (query.length < 3) {
-      fetchUrls();
-      return;
-    }
+    setSearchQuery(query);
+    setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/search?q=${encodeURIComponent(query)}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to search URLs");
+      if (query.length < 3) {
+        // If search query is cleared, fetch the full list
+        const response = await fetch("http://localhost:3000/api/list");
+        if (!response.ok) {
+          throw new Error("Failed to fetch URLs");
+        }
+        const data = await response.json();
+        const sortedData = data.sort(
+          (a: UrlEntry, b: UrlEntry) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setUrls(sortedData);
+      } else {
+        // Perform search
+        const response = await fetch(
+          `http://localhost:3000/api/search?q=${encodeURIComponent(query)}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to search URLs");
+        }
+        const data = await response.json();
+        setUrls(data);
       }
-      const data = await response.json();
-      setUrls(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
     }
   };
 
