@@ -17,6 +17,7 @@ A modern URL shortening service built with NestJS and Next.js, featuring a clean
 
 ### Core Features
 
+
 #### Watch how to create shortened URLs
 
 https://github.com/user-attachments/assets/72dc8d06-d3b6-4ceb-9145-3443d2e8ce5b
@@ -26,7 +27,7 @@ https://github.com/user-attachments/assets/72dc8d06-d3b6-4ceb-9145-3443d2e8ce5b
 https://github.com/user-attachments/assets/2d0880ed-7b2c-4d73-aaae-e5c84df97365
 
 #### Explore the detailed statistics and analytics features
-https://github.com/user-attachments/assets/13f534fb-43bb-4298-8ecb-537014880b73
+https://github.com/user-attachments/assets/f8d3d887-5941-42c3-a394-8d949134c8e9
 
 #### See how the real-time search functionality works
 
@@ -36,9 +37,6 @@ https://github.com/user-attachments/assets/02746e06-ed23-4151-b1f6-90fea3835b1e
 
 https://github.com/user-attachments/assets/01181c7a-f854-4e78-98be-15409385f669
 
-#### Explore the detailed statistics and analytics features
-
-https://github.com/user-attachments/assets/568d17b1-475a-4082-a256-debb13505fdb
 
 ## Tech Stack
 
