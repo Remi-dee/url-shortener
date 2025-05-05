@@ -45,8 +45,15 @@ export function UrlList() {
   }, [searchQuery]); // Add searchQuery as dependency to control polling
 
   const fetchUrls = async () => {
+    // Skip polling if we're currently searching
+    if (searchQuery.length >= 3) {
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:3000/api/list");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/list`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch URLs");
       }
@@ -71,7 +78,9 @@ export function UrlList() {
     try {
       if (query.length < 3) {
         // If search query is cleared, fetch the full list
-        const response = await fetch("http://localhost:3000/api/list");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/list`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch URLs");
         }
@@ -84,7 +93,9 @@ export function UrlList() {
       } else {
         // Perform search
         const response = await fetch(
-          `http://localhost:3000/api/search?q=${encodeURIComponent(query)}`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/search?q=${encodeURIComponent(
+            query
+          )}`
         );
         if (!response.ok) {
           throw new Error("Failed to search URLs");
@@ -100,7 +111,7 @@ export function UrlList() {
   };
 
   const handleCopy = async (shortCode: string) => {
-    const shortUrl = `http://localhost:3000/${shortCode}`;
+    const shortUrl = `${process.env.NEXT_PUBLIC_API_URL}/${shortCode}`;
     try {
       await navigator.clipboard.writeText(shortUrl);
       setCopiedUrl(shortCode);
@@ -116,9 +127,12 @@ export function UrlList() {
 
   const confirmDelete = async (shortCode: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/${shortCode}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/${shortCode}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to delete URL");
       }
@@ -211,7 +225,7 @@ export function UrlList() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {urls.map((url) => {
-                const shortUrl = `http://localhost:3000/${url.shortCode}`;
+                const shortUrl = `${process.env.NEXT_PUBLIC_API_URL}/${url.shortCode}`;
                 return (
                   <tr
                     key={url.shortCode}

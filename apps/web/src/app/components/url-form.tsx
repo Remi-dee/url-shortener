@@ -18,13 +18,16 @@ export function UrlForm({ onUrlCreated }: UrlFormProps) {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:3000/api/encode", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/encode`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url: url }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Invalid URL");

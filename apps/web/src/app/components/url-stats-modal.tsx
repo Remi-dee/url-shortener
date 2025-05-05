@@ -2,6 +2,18 @@
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
 interface UrlStatsModalProps {
   shortCode: string;
@@ -17,6 +29,8 @@ interface UrlStats {
   visitsByDevice: { device: string; count: number }[];
 }
 
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
+
 export function UrlStatsModal({ shortCode, onClose }: UrlStatsModalProps) {
   const [stats, setStats] = useState<UrlStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +40,7 @@ export function UrlStatsModal({ shortCode, onClose }: UrlStatsModalProps) {
     const fetchStats = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/statistic/${shortCode}`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/statistic/${shortCode}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch statistics");
@@ -56,7 +70,7 @@ export function UrlStatsModal({ shortCode, onClose }: UrlStatsModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 animate-slide-in">
+      <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 animate-slide-in max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-900">
             URL Statistics
@@ -109,49 +123,80 @@ export function UrlStatsModal({ shortCode, onClose }: UrlStatsModalProps) {
                 Visits by Day
               </h3>
               <div className="h-64 bg-gray-50 rounded-lg p-4">
-                {/* We can add a chart here using a library like Chart.js or Recharts */}
-                <div className="text-center text-gray-500">
-                  Chart will be displayed here
-                </div>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={stats.visitsByDay}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="date"
+                      tick={{ fontSize: 12 }}
+                      angle={-45}
+                      textAnchor="end"
+                      height={60}
+                    />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900">
                   Top Countries
                 </h3>
-                <div className="space-y-2">
-                  {stats.visitsByCountry?.map(({ country, count }) => (
-                    <div
-                      key={country}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="text-sm text-gray-600">{country}</span>
-                      <span className="text-sm font-medium text-gray-900">
-                        {count}
-                      </span>
-                    </div>
-                  ))}
+                <div className="h-64 bg-gray-50 rounded-lg p-4">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={stats.visitsByCountry}
+                        dataKey="count"
+                        nameKey="country"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label
+                      >
+                        {stats.visitsByCountry.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900">
                   Device Types
                 </h3>
-                <div className="space-y-2">
-                  {stats.visitsByDevice?.map(({ device, count }) => (
-                    <div
-                      key={device}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="text-sm text-gray-600">{device}</span>
-                      <span className="text-sm font-medium text-gray-900">
-                        {count}
-                      </span>
-                    </div>
-                  ))}
+                <div className="h-64 bg-gray-50 rounded-lg p-4">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={stats.visitsByDevice}
+                        dataKey="count"
+                        nameKey="device"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label
+                      >
+                        {stats.visitsByDevice.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
             </div>
