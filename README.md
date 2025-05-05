@@ -231,21 +231,25 @@ MIT
 
 ## Deployment
 
-### Backend (Render)
+### Backend Deployment (Render)
 
 1. Create a new Web Service on Render
-2. Connect your repository
+2. Connect your GitHub repository
 3. Configure the following settings:
-   - Runtime: Node
-   - Build Command: `npm install -g pnpm && pnpm install --no-frozen-lockfile && pnpm build`
-   - Start Command: `pnpm start:prod`
+
+   - Name: url-shortener-api
+   - Environment: Node
+   - Build Command: `cd apps/api && pnpm install --no-frozen-lockfile && pnpm build`
+   - Start Command: `cd apps/api && pnpm start:prod`
    - Environment Variables:
      ```
      PORT=10000
      FRONTEND_URL=your-frontend-url
      ```
 
-### Frontend (Vercel)
+4. Deploy!
+
+### Frontend Deployment (Vercel)
 
 1. Push your code to GitHub
 2. Connect your repository to Vercel
