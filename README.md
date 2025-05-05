@@ -228,3 +228,24 @@ MIT
 - [Bulk Operations](https://example.com/demos/bulk-operations.mp4) - See how to perform bulk URL operations
 
 > Note: Replace the example.com URLs with actual video demo links when available.
+
+## Deployment
+
+### Vercel Deployment
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Configure the following settings in Vercel:
+
+   - Framework Preset: Next.js
+   - Build Command: `cd ../.. && pnpm install --no-frozen-lockfile && pnpm build:web`
+   - Output Directory: `apps/web/.next`
+   - Install Command: `pnpm install --no-frozen-lockfile`
+   - Environment Variables:
+     ```
+     NEXT_PUBLIC_API_URL=your-api-url
+     ```
+
+4. Deploy!
+
+Note: Make sure to set up your backend API separately and update the `NEXT_PUBLIC_API_URL` environment variable in Vercel to point to your deployed API.
