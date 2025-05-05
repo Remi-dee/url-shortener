@@ -130,6 +130,12 @@ pnpm test:api
 
 For a more user-friendly and interactive API documentation, you can access the Swagger UI at:
 
+deployed url:
+```
+https://url-shortener-dxks.onrender.com/api/docs
+```
+
+dev url:
 ```
 http://localhost:3000/api/docs
 ```
