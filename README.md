@@ -25,6 +25,9 @@ https://github.com/user-attachments/assets/72dc8d06-d3b6-4ceb-9145-3443d2e8ce5b
 
 https://github.com/user-attachments/assets/2d0880ed-7b2c-4d73-aaae-e5c84df97365
 
+#### Explore the detailed statistics and analytics features
+https://github.com/user-attachments/assets/13f534fb-43bb-4298-8ecb-537014880b73
+
 #### See how the real-time search functionality works
 
 https://github.com/user-attachments/assets/02746e06-ed23-4151-b1f6-90fea3835b1e
