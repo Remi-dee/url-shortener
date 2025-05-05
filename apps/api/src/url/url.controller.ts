@@ -36,7 +36,7 @@ export class UrlController {
   encode(@Body() createUrlDto: CreateUrlDto): { shortUrl: string } {
     const url = this.urlService.create(createUrlDto);
     return {
-      shortUrl: `${process.env.FRONTEND_URL}/${url.shortCode}`,
+      shortUrl: `${process.env.BACKEND_URL || 'http://localhost:3000'}/${url.shortCode}`,
     };
   }
 
