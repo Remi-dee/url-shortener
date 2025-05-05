@@ -13,41 +13,30 @@ A modern URL shortening service built with NestJS and Next.js, featuring a clean
 - Responsive design
 - API endpoints for programmatic access
 
-
 ## Video Demos
 
 ### Core Features
 
+#### Watch how to create shortened URLs
 
- #### Watch how to create shortened URLs
-
- https://github.com/user-attachments/assets/72dc8d06-d3b6-4ceb-9145-3443d2e8ce5b
-
-
+https://github.com/user-attachments/assets/72dc8d06-d3b6-4ceb-9145-3443d2e8ce5b
 
 #### See the one-click copy functionality in action and real-time updates on link visits
 
 https://github.com/user-attachments/assets/2d0880ed-7b2c-4d73-aaae-e5c84df97365
 
-
-
 #### See how the real-time search functionality works
 
 https://github.com/user-attachments/assets/02746e06-ed23-4151-b1f6-90fea3835b1e
-
-
-
 
 #### See the safe deletion process with confirmation
 
 https://github.com/user-attachments/assets/01181c7a-f854-4e78-98be-15409385f669
 
-
-
 #### Explore the detailed statistics and analytics features
+
 https://github.com/user-attachments/assets/568d17b1-475a-4082-a256-debb13505fdb
 
-  
 ## Tech Stack
 
 - **Frontend**: Next.js, React, TypeScript, Tailwind CSS
@@ -122,7 +111,23 @@ pnpm test:api
 
 ## API Documentation
 
-### Endpoints
+### Interactive API Documentation (Swagger UI)
+
+For a more user-friendly and interactive API documentation, you can access the Swagger UI at:
+
+```
+http://localhost:3000/api/docs
+```
+
+The Swagger UI provides:
+
+- Interactive API testing interface
+- Detailed request/response schemas
+- Example requests
+- Authentication requirements (if any)
+- Try-it-out functionality for all endpoints
+
+### API Endpoints Reference
 
 #### Create Short URL
 
@@ -201,7 +206,6 @@ pnpm test:api
 ## License
 
 MIT
-
 
 ### API Usage
 

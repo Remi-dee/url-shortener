@@ -13,12 +13,26 @@ import {
 import { UrlService } from './url.service';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { Url } from './interfaces/url.interface';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 
+@ApiTags('urls')
 @Controller()
 export class UrlController {
   constructor(private readonly urlService: UrlService) {}
 
   @Post('api/encode')
+  @ApiOperation({ summary: 'Create a shortened URL' })
+  @ApiResponse({
+    status: 201,
+    description: 'URL has been successfully shortened',
+  })
+  @ApiResponse({ status: 400, description: 'Invalid URL provided' })
   encode(@Body() createUrlDto: CreateUrlDto): { shortUrl: string } {
     const url = this.urlService.create(createUrlDto);
     return {
@@ -27,6 +41,10 @@ export class UrlController {
   }
 
   @Get('api/decode/:code')
+  @ApiOperation({ summary: 'Get original URL from short code' })
+  @ApiParam({ name: 'code', description: 'Short URL code' })
+  @ApiResponse({ status: 200, description: 'Original URL found' })
+  @ApiResponse({ status: 404, description: 'URL not found' })
   decode(@Param('code') code: string): { originalUrl: string } {
     const url = this.urlService.findByShortCode(code);
     if (!url) {
@@ -36,46 +54,38 @@ export class UrlController {
   }
 
   @Get('api/statistic/:code')
+  @ApiOperation({ summary: 'Get URL statistics' })
+  @ApiParam({ name: 'code', description: 'Short URL code' })
+  @ApiResponse({ status: 200, description: 'URL statistics retrieved' })
+  @ApiResponse({ status: 404, description: 'URL not found' })
   getStatistics(@Param('code') code: string) {
     const url = this.urlService.findByShortCode(code);
     if (!url) {
       throw new HttpException('URL not found', HttpStatus.NOT_FOUND);
     }
-
-    // Mock data for demonstration
-    return {
-      visits: url.visits,
-      createdAt: url.createdAt,
-      lastVisited: url.lastVisited,
-      visitsByDay: [
-        { date: '2024-03-01', count: 5 },
-        { date: '2024-03-02', count: 8 },
-        { date: '2024-03-03', count: 12 },
-      ],
-      visitsByCountry: [
-        { country: 'United States', count: 15 },
-        { country: 'United Kingdom', count: 6 },
-        { country: 'Germany', count: 4 },
-      ],
-      visitsByDevice: [
-        { device: 'Desktop', count: 12 },
-        { device: 'Mobile', count: 8 },
-        { device: 'Tablet', count: 3 },
-      ],
-    };
+    return this.urlService.getStatistics(code);
   }
 
   @Get('api/list')
+  @ApiOperation({ summary: 'Get all URLs' })
+  @ApiResponse({ status: 200, description: 'List of all URLs' })
   findAll(): Url[] {
     return this.urlService.findAll();
   }
 
   @Get('api/search')
+  @ApiOperation({ summary: 'Search URLs' })
+  @ApiQuery({ name: 'q', description: 'Search query (minimum 3 characters)' })
+  @ApiResponse({ status: 200, description: 'List of matching URLs' })
   search(@Query('q') query: string): Url[] {
     return this.urlService.search(query);
   }
 
   @Get(':code')
+  @ApiOperation({ summary: 'Redirect to original URL' })
+  @ApiParam({ name: 'code', description: 'Short URL code' })
+  @ApiResponse({ status: 302, description: 'Redirect to original URL' })
+  @ApiResponse({ status: 404, description: 'URL not found' })
   @Redirect()
   async redirect(@Param('code') code: string) {
     const url = this.urlService.findByShortCode(code);
@@ -87,6 +97,10 @@ export class UrlController {
   }
 
   @Delete(':code')
+  @ApiOperation({ summary: 'Delete a URL' })
+  @ApiParam({ name: 'code', description: 'Short URL code' })
+  @ApiResponse({ status: 200, description: 'URL successfully deleted' })
+  @ApiResponse({ status: 404, description: 'URL not found' })
   remove(@Param('code') code: string) {
     return this.urlService.remove(code);
   }
