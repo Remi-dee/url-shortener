@@ -17,7 +17,6 @@ A modern URL shortening service built with NestJS and Next.js, featuring a clean
 
 ### Core Features
 
-
 #### Watch how to create shortened URLs
 
 https://github.com/user-attachments/assets/72dc8d06-d3b6-4ceb-9145-3443d2e8ce5b
@@ -27,6 +26,7 @@ https://github.com/user-attachments/assets/72dc8d06-d3b6-4ceb-9145-3443d2e8ce5b
 https://github.com/user-attachments/assets/2d0880ed-7b2c-4d73-aaae-e5c84df97365
 
 #### Explore the detailed statistics and analytics features
+
 https://github.com/user-attachments/assets/f8d3d887-5941-42c3-a394-8d949134c8e9
 
 #### See how the real-time search functionality works
@@ -36,7 +36,6 @@ https://github.com/user-attachments/assets/02746e06-ed23-4151-b1f6-90fea3835b1e
 #### See the safe deletion process with confirmation
 
 https://github.com/user-attachments/assets/01181c7a-f854-4e78-98be-15409385f669
-
 
 ## Tech Stack
 
@@ -232,7 +231,22 @@ MIT
 
 ## Deployment
 
-### Vercel Deployment
+### Backend (Render)
+
+1. Create a new Web Service on Render
+2. Connect your GitHub repository
+3. Configure the following settings:
+   - Name: `url-shortener-api`
+   - Environment: `Node`
+   - Build Command: `cd apps/api && pnpm install && pnpm build`
+   - Start Command: `cd apps/api && pnpm start:prod`
+   - Environment Variables:
+     ```
+     PORT=10000
+     FRONTEND_URL=https://your-frontend-url.vercel.app
+     ```
+
+### Frontend (Vercel)
 
 1. Push your code to GitHub
 2. Connect your repository to Vercel
@@ -244,9 +258,9 @@ MIT
    - Install Command: `pnpm install --no-frozen-lockfile`
    - Environment Variables:
      ```
-     NEXT_PUBLIC_API_URL=your-api-url
+     NEXT_PUBLIC_API_URL=https://your-backend-url.onrender.com
      ```
 
 4. Deploy!
 
-Note: Make sure to set up your backend API separately and update the `NEXT_PUBLIC_API_URL` environment variable in Vercel to point to your deployed API.
+Note: Make sure to update the environment variables with your actual deployed URLs after deployment.
