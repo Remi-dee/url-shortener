@@ -66,9 +66,9 @@ describe('UrlController', () => {
       const result = controller.getStatistics(shortCode);
 
       expect(result).toBeDefined();
-      expect(result.visits).toBe(0);
-      expect(result.lastVisited).toBeUndefined();
-      expect(result.createdAt).toBeDefined();
+      expect(result!.visits).toBe(0);
+      expect(result!.lastVisited).toBeUndefined();
+      expect(result!.createdAt).toBeDefined();
     });
 
     it('should throw NotFoundException for non-existent short code', () => {

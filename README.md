@@ -81,7 +81,21 @@ url-shortener/
    pnpm install
    ```
 
-3. Start the development servers:
+3. Set up environment variables:
+
+   ```bash
+   # Backend (NestJS)
+   cd apps/api
+   cp .env.example .env
+   # Edit .env with your configuration
+
+   # Frontend (Next.js)
+   cd ../web
+   cp .env.example .env.local
+   # Edit .env.local with your configuration
+   ```
+
+4. Start the development servers:
 
    ```bash
    # Start both frontend and backend
@@ -92,9 +106,10 @@ url-shortener/
    pnpm dev:api    # Backend only
    ```
 
-4. Access the application:
+5. Access the application:
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:3001
+   - API Documentation: http://localhost:3000/api/docs
 
 ## Running Tests
 
