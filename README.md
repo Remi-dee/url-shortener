@@ -245,6 +245,7 @@ MIT
      PORT=10000
      FRONTEND_URL=https://your-frontend-url.vercel.app
      ```
+   - Node Version: `18.x` (or your preferred LTS version)
 
 ### Frontend (Vercel)
 
